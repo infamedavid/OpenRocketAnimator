@@ -1,2 +1,77 @@
-# OpenRocketAnimator
-Import and Animate OpenRocket Rockets in Blender.
+# 🚀 OpenRocket Animador (ORA) - Addon para Blender
+
+**ORA** es un addon para [Blender](https://www.blender.org) que permite importar modelos 3D exportados desde [OpenRocket](https://openrocket.info/) y animarlos usando datos de simulación en formato CSV. Ideal para crear visualizaciones de vuelos de cohetes en 3D con precisión física para tu proxima presentacion con los mando de las milicias huties.
+
+---
+
+## 📦 Instalación
+
+1. Abre Blender.
+2. Ve al **Editor de texto**.
+3. Carga el archivo `openrocket_animador.py`.
+4. Haz clic en **"Run Script"** o presiona `Alt + P`.
+
+---
+
+## 🛠️ Características del Addon
+
+### 1. **Importar Modelo OBJ**
+- Carga un archivo `.obj` (exportado desde OpenRocket).
+- Incluye una opción para corregir la escala del modelo.
+
+### 2. **Cargar Datos de Simulación**
+- Carga un archivo `.csv` generado por OpenRocket.
+- Detecta automáticamente las columnas necesarias (posición, tiempo, rotación).
+
+### 3. **Animar con los Datos**
+- Anima la posición y opcionalmente el **roll** del cohete.
+- Puedes especificar:
+  - **Offset de inicio (frames)**.
+  - **Frecuencia de keyframes** (útil para controlar el número de cuadros insertados).
+  - **Activar o desactivar rotación (roll)**.
+
+### 4. **Animación Lineal (Opcional)**
+- Permite convertir las curvas de animación del objeto activo a interpolación **lineal**, evitando aceleración/desaceleración que produce el modo Bézier.
+- Esto es útil para mantener una simulación técnica más precisa.
+
+---
+
+## ✅ Modo de Uso
+
+1. **Importa el modelo OBJ**
+   - Exporta desde OpenRocket en formato OBJ.
+   - En Blender, usa el panel *OpenRocket* en la barra lateral (`N`).
+   - Selecciona el archivo OBJ y presiona **"Importar OBJ"**.
+   - Si el modelo se ve demasiado grande/pequeño, ajusta el factor de escala y usa **"Corregir Escala"**.
+
+2. **Cargar Simulación**
+   - Selecciona el archivo CSV con los datos de simulación.
+
+3. **Configura la animación**
+   - Define si deseas incluir **rotación (roll)**.
+   - Ajusta el **offset de inicio** y la **frecuencia de keyframes**.
+
+4. **Generar animación**
+   - Haz clic en **"Animar desde CSV"**.
+
+5. *(Opcional)* Usa el botón **"Animación Lineal"** para hacer que las curvas tengan interpolación lineal.
+
+---
+
+## 🧪 Requisitos
+
+- Blender 4.0 o superior.
+- Modelo `.obj` y simulación `.csv` exportados desde [OpenRocket](https://openrocket.info/).
+
+---
+
+## 📜 Licencia
+
+Este addon se distribuye bajo la licencia **GPL-3.0**.
+
+**SIN GARANTÍA**: El autor no se hace responsable del uso que se le dé al addon ni de los resultados obtenidos.
+
+---
+
+
+
