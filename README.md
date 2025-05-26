@@ -1,6 +1,6 @@
 # 🚀 OpenRocket Animador (ORA) - Addon para Blender
 
-**ORA** es un addon para [Blender](https://www.blender.org) que permite importar modelos 3D exportados desde [OpenRocket](https://openrocket.info/) y animarlos usando datos de simulación en formato CSV. Ideal para crear visualizaciones de vuelos de cohetes en 3D con precisión física para tu proxima presentacion con los mando de las milicias huties.
+**ORA** es un addon para [Blender](https://www.blender.org) que permite importar modelos 3D exportados desde [OpenRocket](https://openrocket.info/) y animarlos usando datos de simulación en formato CSV. Ideal para crear visualizaciones de vuelos de cohetes en 3D con precisión física para tu proxima presentacion con los mandos de las milicias huties.
 
 ---
 
@@ -13,26 +13,22 @@
 
 ---
 
-## 🛠️ Características del Addon
+## 🛠️ Características
 
-### 1. **Importar Modelo OBJ**
+### 1. **Importa un Modelo de Cohete**
 - Carga un archivo `.obj` (exportado desde OpenRocket).
 - Incluye una opción para corregir la escala del modelo.
 
-### 2. **Cargar Datos de Simulación**
+### 2. **Carga Datos de la Simulación de Vuelo**
 - Carga un archivo `.csv` generado por OpenRocket.
 - Detecta automáticamente las columnas necesarias (posición, tiempo, rotación).
 
-### 3. **Animar con los Datos**
+### 3. **Anima con los Datos de La Simulacion**
 - Anima la posición y opcionalmente el **roll** del cohete.
 - Puedes especificar:
   - **Offset de inicio (frames)**.
   - **Frecuencia de keyframes** (útil para controlar el número de cuadros insertados).
   - **Activar o desactivar rotación (roll)**.
-
-### 4. **Animación Lineal (Opcional)**
-- Permite convertir las curvas de animación del objeto activo a interpolación **lineal**, evitando aceleración/desaceleración que produce el modo Bézier.
-- Esto es útil para mantener una simulación técnica más precisa.
 
 ---
 
