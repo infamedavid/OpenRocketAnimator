@@ -4,15 +4,6 @@
 
 ---
 
-## 📦 Instalación
-
-1. Abre Blender.
-2. Ve al **Editor de texto**.
-3. Carga el archivo `ORA1.7.py`.
-4. Haz clic en **"Run Script"** o presiona `Alt + P`.
-
----
-
 ## 🛠️ Características
 
 ### 1. **Importa un Modelo de Cohete**
@@ -29,6 +20,15 @@
   - **Offset de inicio (frames)**.
   - **Frecuencia de keyframes** (útil para controlar el número de cuadros insertados).
   - **Activar o desactivar rotación (roll)**.
+
+---
+
+## 📦 Instalación
+
+1. Abre Blender.
+2. Ve al **Editor de texto**.
+3. Carga el archivo `ORA1.7.py`.
+4. Haz clic en **"Run Script"** o presiona `Alt + P`.
 
 ---
 
