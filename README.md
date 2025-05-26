@@ -50,7 +50,7 @@
 4. **Generar animación**
    - Haz clic en **"Animar desde CSV"**.
 
-5. *(Opcional)* Usa el botón **"Animación Lineal"** para hacer que las curvas tengan interpolación lineal, evitando aceleración/desaceleración automática que produce el modo Bézier cuando si la frecuencia de keyframes es diferente a 1. esto es útil para mantener una simulación técnica más precisa.
+5. *(Opcional)* Usa el botón **"Animación Lineal"** para hacer que las curvas tengan interpolación lineal, evitando aceleración/desaceleración automática que produce el modo Bézier cuando la frecuencia de keyframes es diferente a 1. esto es útil para mantener una simulación técnica más precisa.
 
 ---
 
