@@ -1,7 +1,7 @@
 bl_info = {
     "name": "OpenRocket OBJ + CSV Animator",
     "author": "effetagroove@gmail.com",
-    "version": (alpha 0),
+    "version": (1,0),
     "blender": (4, 0, 0),
     "location": "3D Viewport > Sidebar > OpenRocket Panel",
     "description": "Importa un modelo OBJ y anima su movimiento usando datos de simulación de OpenRocket.",
