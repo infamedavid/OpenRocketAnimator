@@ -1,2 +1,2 @@
 # OpenRocketAnimator
-Import and Animate  OpenRocket Rockets.
+Import and Animate OpenRocket Rockets in Blender.
