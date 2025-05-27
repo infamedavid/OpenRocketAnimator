@@ -1,6 +1,6 @@
 # 🚀 OpenRocket Animador (ORA) - Addon para Blender
 
-![Logo]([ruta/a/la/imagen.jpg "Título opcional](https://github.com/infamedavid/OpenRocketAnimator/blob/main/assets/ORA_icon.png?raw=true)")
+![Logo](https://github.com/infamedavid/OpenRocketAnimator/blob/main/assets/ORA_icon.png?raw=true)")
 
 **ORA** es un addon para [Blender](https://www.blender.org) que permite importar modelos 3D exportados desde [OpenRocket](https://openrocket.info/) y animarlos usando datos de simulación en formato CSV. Ideal para crear visualizaciones de vuelos de cohetes en 3D con precisión física.
 
