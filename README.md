@@ -24,6 +24,10 @@
   - **Frecuencia de keyframes** (útil para controlar el número de cuadros insertados).
   - **Activar o desactivar rotación (roll)**.
 
+### 4. **Maneja las Camaras y pon en Foco tu Cohete**
+- Haz que la camara activa apunte directamente al cohete y lo siga en su trayectoria.
+- Puedes anadir nuevas camaras  montadas sobre el cohete y hacer que se sacudan para mayor dramatismo
+  
 ---
 
 ## 📦 Instalación
