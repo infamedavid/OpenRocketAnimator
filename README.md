@@ -32,10 +32,10 @@
 
 ## 📦 Instalación
 
-1. Abre Blender.
-2. Ve al **Editor de texto**.
-3. Carga el archivo [`ORA2.1.py`](https://github.com/infamedavid/OpenRocketAnimator/tree/main/assets) .
-4. Haz clic en **"Run Script"** o presiona `Alt + P`.
+1. Descarga el archivo [`ORA2.zip`](https://github.com/infamedavid/OpenRocketAnimator/tree/main/assets).
+2. ejecuta Blender.
+3. Dirigete a Edit/Preferences/Add-ons.
+4. En la esquina superior derecha selecciona"Install from File " navega hasta la carpeta  donde descargate el zip seleccionalo  y listo!`.
 
 ---
 
