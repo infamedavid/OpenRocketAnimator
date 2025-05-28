@@ -30,7 +30,7 @@
 
 1. Abre Blender.
 2. Ve al **Editor de texto**.
-3. Carga el archivo [`ORA1.7.py`](https://github.com/infamedavid/OpenRocketAnimator/tree/main/assets) .
+3. Carga el archivo [`ORA2.1.py`](https://github.com/infamedavid/OpenRocketAnimator/tree/main/assets) .
 4. Haz clic en **"Run Script"** o presiona `Alt + P`.
 
 ---
