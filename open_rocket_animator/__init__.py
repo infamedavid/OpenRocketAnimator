@@ -1,5 +1,5 @@
 bl_info = {
-    "name": "OpenRocket OBJ + CSV Animator",
+    "name": "OpenRocket Animator",
     "author": "infamedavid",
     "version": (2, 3),
     "blender": (5, 0, 0),

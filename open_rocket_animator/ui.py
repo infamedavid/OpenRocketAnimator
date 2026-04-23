@@ -29,7 +29,7 @@ class ORA_PT_Panel(bpy.types.Panel):
         box3 = layout.box()
         box3.label(text="3. Animation Options")
         box3.prop(props, "animate_rotation")
-        box3.prop(props, "animate_attitude")
+        #box3.prop(props, "animate_attitude")
         box3.prop(props, "frame_offset")
         box3.prop(props, "keyframe_step")
         box3.operator("object.ora_animate_csv", text="Animate from CSV")
