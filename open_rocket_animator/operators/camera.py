@@ -8,26 +8,29 @@ from ..core.camera_utils import (
 )
 
 
+def resolve_rocket_object(props):
+    if props.rocket_object:
+        return props.rocket_object
+    if props.rocket_name:
+        return get_rocket_object(props.rocket_name)
+    return None
+
+
 class ORA_OT_TrackRocket(bpy.types.Operator):
     bl_idname = "object.ora_track_rocket"
     bl_label = "Track Rocket"
 
     def execute(self, context):
         props = context.scene.ora_props
-        rocket_name = props.rocket_name
+        rocket = resolve_rocket_object(props)
 
-        if not rocket_name:
-            self.report({'ERROR'}, "El campo 'Nombre del cohete' está vacío.")
-            return {'CANCELLED'}
-
-        rocket = get_rocket_object(rocket_name)
         if not rocket:
-            self.report({'ERROR'}, f"No se encontró un objeto llamado '{rocket_name}'.")
+            self.report({'ERROR'}, "No valid rocket object selected. Choose one in Rocket Object.")
             return {'CANCELLED'}
 
         cam = context.scene.camera
         if not cam:
-            self.report({'ERROR'}, "No hay cámara activa en la escena.")
+            self.report({'ERROR'}, "No active camera in the scene.")
             return {'CANCELLED'}
 
         constraint = cam.constraints.get("Track To")
@@ -39,26 +42,21 @@ class ORA_OT_TrackRocket(bpy.types.Operator):
         constraint.track_axis = 'TRACK_NEGATIVE_Z'
         constraint.up_axis = 'UP_Y'
 
-        self.report({'INFO'}, f"La cámara activa ahora sigue al cohete '{rocket_name}'.")
+        self.report({'INFO'}, f"Active camera now tracks rocket '{rocket.name}'.")
         return {'FINISHED'}
 
 
 class ORA_OT_AddRocketCamera(bpy.types.Operator):
     bl_idname = "object.ora_add_rocket_camera"
     bl_label = "Add Rocket Camera"
-    bl_description = "Añade una cámara cenital emparentada al cohete, con opciones de offset y ajuste de clipping."
+    bl_description = "Add a top camera parented to the rocket with offset and clipping options."
 
     def execute(self, context):
         props = context.scene.ora_props
-        rocket_name = props.rocket_name
+        rocket = resolve_rocket_object(props)
 
-        if not rocket_name:
-            self.report({'ERROR'}, "El campo 'Nombre del cohete' está vacío.")
-            return {'CANCELLED'}
-
-        rocket = get_rocket_object(rocket_name)
         if not rocket:
-            self.report({'ERROR'}, f"No se encontró un objeto llamado '{rocket_name}'.")
+            self.report({'ERROR'}, "No valid rocket object selected. Choose one in Rocket Object.")
             return {'CANCELLED'}
 
         cam_data = bpy.data.cameras.new(name="Rocket_Top_Camera")
@@ -75,44 +73,43 @@ class ORA_OT_AddRocketCamera(bpy.types.Operator):
             camera_obj.select_set(True)
             context.view_layer.objects.active = camera_obj
 
-        self.report({'INFO'}, f"Cámara cenital '{camera_obj.name}' creada y configurada para '{rocket_name}'.")
+        self.report({'INFO'}, f"Top camera '{camera_obj.name}' created and configured for '{rocket.name}'.")
         return {'FINISHED'}
 
 
 class ORA_OT_UpdateRocketCamera(bpy.types.Operator):
     bl_idname = "object.ora_update_rocket_camera"
     bl_label = "Update Camera"
-    bl_description = "Actualiza la posición y el clipping de la cámara cenital existente según los offsets. Solo actualiza la primera cámara llamada 'Rocket_Top_Camera'."
+    bl_description = "Update position and clipping for the existing Rocket_Top_Camera using current offsets."
 
     def execute(self, context):
         props = context.scene.ora_props
-        rocket_name = props.rocket_name
 
         camera_obj = bpy.data.objects.get("Rocket_Top_Camera")
         if not camera_obj:
-            self.report({'ERROR'}, "No se encontró la cámara 'Rocket_Top_Camera'. Por favor, créala primero.")
+            self.report({'ERROR'}, "Camera 'Rocket_Top_Camera' was not found. Please create it first.")
             return {'CANCELLED'}
 
-        rocket = get_rocket_object(rocket_name)
+        rocket = resolve_rocket_object(props)
         if not rocket:
-            self.report({'ERROR'}, f"No se encontró un objeto llamado '{rocket_name}' para actualizar la cámara. El nombre del cohete puede haber cambiado o el objeto fue eliminado.")
+            self.report({'ERROR'}, "No valid rocket object selected. Choose one in Rocket Object.")
             return {'CANCELLED'}
 
         if camera_obj.parent != rocket:
             camera_obj.parent = rocket
-            self.report({'INFO'}, "La cámara 'Rocket_Top_Camera' ha sido re-emparentada al cohete especificado.")
+            self.report({'INFO'}, "Camera 'Rocket_Top_Camera' was re-parented to the selected rocket.")
 
         apply_top_camera_transform(camera_obj, rocket, props)
         ensure_track_to_constraint(camera_obj, rocket, constraint_name="Track To Rocket")
 
-        self.report({'INFO'}, "Cámara cenital 'Rocket_Top_Camera' actualizada.")
+        self.report({'INFO'}, "Top camera 'Rocket_Top_Camera' updated.")
         return {'FINISHED'}
 
 
 class ORA_OT_AddCameraNoise(bpy.types.Operator):
     bl_idname = "object.ora_add_camera_noise"
     bl_label = "Add Camera Noise"
-    bl_description = "Añade un modificador Noise a las curvas de Location X/Y de la cámara seleccionada para simular vibración/dramatismo."
+    bl_description = "Add a Noise modifier to Location X/Y animation curves on the selected camera."
 
     def execute(self, context):
         props = context.scene.ora_props
@@ -124,7 +121,7 @@ class ORA_OT_AddCameraNoise(bpy.types.Operator):
                 break
 
         if not camera_obj:
-            self.report({'ERROR'}, "Por favor, selecciona una cámara en la escena para aplicar el ruido.")
+            self.report({'ERROR'}, "Please select a camera in the scene to apply noise.")
             return {'CANCELLED'}
 
         if not camera_obj.animation_data:
@@ -134,7 +131,7 @@ class ORA_OT_AddCameraNoise(bpy.types.Operator):
         camera_obj.keyframe_insert(data_path="location", frame=current_frame)
 
         if not camera_obj.animation_data or not camera_obj.animation_data.action:
-            self.report({'WARNING'}, f"No se pudieron crear curvas de animación para la cámara '{camera_obj.name}'.")
+            self.report({'WARNING'}, f"Could not create animation curves for camera '{camera_obj.name}'.")
             return {'CANCELLED'}
 
         data_paths_and_indices = [
@@ -146,7 +143,7 @@ class ORA_OT_AddCameraNoise(bpy.types.Operator):
             # Blender 5 Action/Slot-compatible path.
             fcurve = ensure_fcurve_for_datablock(camera_obj, data_path, index=index)
             if not fcurve:
-                self.report({'WARNING'}, f"No se pudo acceder a la curva '{data_path}' (índice {index}) de '{camera_obj.name}'.")
+                self.report({'WARNING'}, f"Could not access curve '{data_path}' (index {index}) on '{camera_obj.name}'.")
                 return {'CANCELLED'}
 
             noise_modifier = None
@@ -163,7 +160,7 @@ class ORA_OT_AddCameraNoise(bpy.types.Operator):
             noise_modifier.depth = props.noise_depth
             noise_modifier.blend_type = 'REPLACE'
 
-            self.report({'INFO'}, f"Modificador Noise aplicado a la curva '{data_path}' de la cámara '{camera_obj.name}'.")
+            self.report({'INFO'}, f"Noise modifier applied to '{data_path}' curve on camera '{camera_obj.name}'.")
 
         return {'FINISHED'}
 

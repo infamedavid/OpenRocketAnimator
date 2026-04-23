@@ -23,7 +23,7 @@ def find_header_index(header, name):
     for idx, col_name in enumerate(header):
         if name in col_name:
             return idx
-    raise ValueError(f"'{name}' no encontrado en el encabezado")
+    raise ValueError(f"'{name}' not found in CSV header")
 
 
 def iter_csv_rows(lines, data_start):

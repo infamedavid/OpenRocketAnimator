@@ -13,18 +13,21 @@ class ORA_PT_Panel(bpy.types.Panel):
         props = context.scene.ora_props
 
         box1 = layout.box()
-        box1.label(text="1. Importar Modelo OBJ")
+        box1.label(text="1. Import OBJ Model")
         box1.prop(props, "obj_filepath")
         box1.operator("object.ora_import_obj")
         box1.prop(props, "default_scale_factor")
-        box1.operator("object.ora_fix_scale")
+
+        row_fix = box1.row(align=True)
+        row_fix.operator("object.ora_fix_scale")
+        row_fix.operator("object.ora_clear_rotation")
 
         box2 = layout.box()
-        box2.label(text="2. Cargar Simulación CSV")
+        box2.label(text="2. Load CSV Simulation")
         box2.prop(props, "csv_filepath")
 
         box3 = layout.box()
-        box3.label(text="3. Opciones de Animación")
+        box3.label(text="3. Animation Options")
         box3.prop(props, "animate_rotation")
         box3.prop(props, "frame_offset")
         box3.prop(props, "keyframe_step")
@@ -32,18 +35,18 @@ class ORA_PT_Panel(bpy.types.Panel):
         box3.operator("object.ora_convert_to_linear")
 
         box4 = layout.box()
-        box4.label(text="4. Manejo de Cámaras")
+        box4.label(text="4. Camera Tools")
 
-        box4.label(text="Cohete a seguir:")
-        box4.prop(props, "rocket_name", text="")
+        box4.label(text="Rocket Object:")
+        box4.prop(props, "rocket_object", text="")
 
         box_camera_track = box4.box()
-        box_camera_track.label(text="Cámara de Seguimiento")
+        box_camera_track.label(text="Tracking Camera")
         box_camera_track.operator("view3d.object_as_camera", text="Set selected camera as active")
-        box_camera_track.operator("object.ora_track_rocket", text="Track Rocket with active camera")
+        box_camera_track.operator("object.ora_track_rocket", text="Track Rocket")
 
         box_rocket_camera = box4.box()
-        box_rocket_camera.label(text="Cámara Cenital del Cohete")
+        box_rocket_camera.label(text="Rocket Top Camera")
         box_rocket_camera.prop(props, "set_top_camera_active")
         box_rocket_camera.prop(props, "offset_z_camera")
         box_rocket_camera.prop(props, "offset_x_camera")
@@ -54,7 +57,7 @@ class ORA_PT_Panel(bpy.types.Panel):
         row.operator("object.ora_update_rocket_camera", text="Update Camera")
 
         box_camera_noise = box4.box()
-        box_camera_noise.label(text="Efecto 'Shake' de Cámara (Noise)")
+        box_camera_noise.label(text="Camera Shake (Noise)")
         box_camera_noise.prop(props, "noise_scale")
         box_camera_noise.prop(props, "noise_strength")
         box_camera_noise.prop(props, "noise_depth")
