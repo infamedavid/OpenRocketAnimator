@@ -55,7 +55,7 @@ class ORA_PT_Panel(bpy.types.Panel):
 
         row = box_rocket_camera.row(align=True)
         row.operator("object.ora_add_rocket_camera", text="Add Rocket Camera")
-        row.operator("object.ora_update_rocket_camera", text="Update Camera")
+        #row.operator("object.ora_update_rocket_camera", text="Update Camera")
 
         box_camera_noise = box4.box()
         box_camera_noise.label(text="Camera Shake (Noise)")
