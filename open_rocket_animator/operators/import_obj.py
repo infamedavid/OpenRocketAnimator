@@ -15,10 +15,9 @@ class ORA_OT_ImportOBJ(bpy.types.Operator):
 
         try:
             bpy.ops.wm.obj_import(filepath=path)
-
             obj = context.view_layer.objects.active
             if obj:
-                self.report({'INFO'}, "OBJ model imported successfully. Use Fix Scale if needed.")
+                self.report({'INFO'}, "OBJ model imported. Use Fix Scale if needed.")
         except Exception as exc:
             self.report({'ERROR'}, f"Error importing OBJ: {exc}")
             return {'CANCELLED'}
@@ -61,7 +60,7 @@ class ORA_OT_ClearRotation(bpy.types.Operator):
         else:
             obj.rotation_euler = (0.0, 0.0, 0.0)
 
-        self.report({'INFO'}, "Rotation cleared for active object.")
+        self.report({'INFO'}, "Rotation cleared.")
         return {'FINISHED'}
 
 

@@ -1,31 +1,34 @@
 bl_info = {
     "name": "OpenRocket OBJ + CSV Animator",
     "author": "infamedavid",
-    "version": (2, 2),
+    "version": (2, 3),
     "blender": (5, 0, 0),
-    "location": "3D Viewport > Sidebar > OpenRocket Panel",
-    "description": "Import an OBJ model and animate its movement using OpenRocket simulation CSV data.",
+    "location": "3D Viewport > Sidebar > OpenRocket",
+    "description": "Import an OBJ model and animate it using OpenRocket CSV data.",
     "category": "Import-Export",
 }
 
 import importlib
 
 from . import properties
-from .operators import animation, camera, import_obj
+from .operators import import_obj, animation, camera
 from . import ui
 
-MODULES = [
+MODULES = (
     properties,
     import_obj,
     animation,
     camera,
     ui,
-]
+)
 
-
+# Optional root-only reload support for development.
 if "bpy" in locals():
-    for module in MODULES:
-        importlib.reload(module)
+    for _module in MODULES:
+        importlib.reload(_module)
+
+
+classes = ()
 
 
 def register():
