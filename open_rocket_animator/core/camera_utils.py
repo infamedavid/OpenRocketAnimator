@@ -36,8 +36,11 @@ def find_mounted_rocket_camera(scene):
 
 def apply_live_camera_offsets(camera_obj, props):
     camera_obj.delta_location.x = props.offset_x_camera
-    camera_obj.delta_location.y = 0.0
+    camera_obj.delta_location.y = props.offset_y_camera
     camera_obj.delta_location.z = props.offset_z_camera
+    if camera_obj.rotation_mode == 'QUATERNION' or camera_obj.rotation_mode == 'AXIS_ANGLE':
+        camera_obj.rotation_mode = 'XYZ'
+    camera_obj.delta_rotation_euler.z = props.rotation_z_camera
 
     if props.adjust_clip_start:
         clip_start = max(abs(props.offset_z_camera), 0.001)
@@ -53,4 +56,6 @@ def rebuild_rocket_camera_mount(camera_obj, rocket, props):
     camera_obj.location.y = base_y
     camera_obj.location.z = top_z
     camera_obj.rotation_euler = (0.0, 0.0, 0.0)
+    camera_obj.delta_location = (0.0, 0.0, 0.0)
+    camera_obj.delta_rotation_euler = (0.0, 0.0, 0.0)
     apply_live_camera_offsets(camera_obj, props)

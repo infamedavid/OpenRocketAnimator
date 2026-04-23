@@ -68,6 +68,15 @@
 
 ---
 
+## ✅ Manual test checklist (Rocket Camera)
+
+- Change **Y Offset (m)** and confirm the mounted rocket camera moves immediately in local Y.
+- Change **Z Rotation** and confirm the mounted rocket camera rotates immediately around local Z.
+- Confirm these live edits use delta transforms and do not overwrite the base mount transform.
+- Press **Update Camera** and confirm the base mount is rebuilt while live offsets remain applied.
+
+---
+
 ## 📜 Licencia
 
 Este addon se distribuye bajo la licencia **GPL-3.0**.
@@ -75,6 +84,5 @@ Este addon se distribuye bajo la licencia **GPL-3.0**.
 **SIN GARANTÍA**: El autor no se hace responsable del uso que se le dé al addon ni de los resultados obtenidos.
 
 ---
-
 
 

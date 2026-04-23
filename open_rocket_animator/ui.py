@@ -49,6 +49,8 @@ class ORA_PT_Panel(bpy.types.Panel):
         box_rocket_camera.prop(props, "set_top_camera_active")
         box_rocket_camera.prop(props, "offset_z_camera")
         box_rocket_camera.prop(props, "offset_x_camera")
+        box_rocket_camera.prop(props, "offset_y_camera")
+        box_rocket_camera.prop(props, "rotation_z_camera")
         box_rocket_camera.prop(props, "adjust_clip_start")
 
         row = box_rocket_camera.row(align=True)

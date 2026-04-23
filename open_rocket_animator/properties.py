@@ -78,6 +78,21 @@ class OpenRocketAnimProps(bpy.types.PropertyGroup):
         unit='LENGTH',
         update=_update_mounted_camera_from_props,
     )
+    offset_y_camera: bpy.props.FloatProperty(
+        name="Y Offset (m)",
+        description="Local Y offset for the mounted rocket camera",
+        default=0.0,
+        unit='LENGTH',
+        update=_update_mounted_camera_from_props,
+    )
+    rotation_z_camera: bpy.props.FloatProperty(
+        name="Z Rotation",
+        description="Local Z rotation offset for the mounted rocket camera",
+        default=0.0,
+        unit='ROTATION',
+        subtype='ANGLE',
+        update=_update_mounted_camera_from_props,
+    )
     adjust_clip_start: bpy.props.BoolProperty(
         name="Adjust Clip Start",
         description="Set camera clip start from mounted camera offset",
