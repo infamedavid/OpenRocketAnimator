@@ -14,7 +14,7 @@ from ..core.csv_utils import (
 
 class ORA_OT_AnimateFromCSV(bpy.types.Operator):
     bl_idname = "object.ora_animate_csv"
-    bl_label = "Animar desde CSV"
+    bl_label = "Animate from CSV"
 
     def execute(self, context):
         props = context.scene.ora_props
@@ -23,12 +23,12 @@ class ORA_OT_AnimateFromCSV(bpy.types.Operator):
         step = props.keyframe_step
 
         if not os.path.exists(csv_path):
-            self.report({'ERROR'}, f"Archivo CSV no encontrado: {csv_path}")
+            self.report({'ERROR'}, f"CSV file not found: {csv_path}")
             return {'CANCELLED'}
 
         obj = context.view_layer.objects.active
         if not obj or obj.type not in {'MESH', 'EMPTY'}:
-            self.report({'ERROR'}, "Selecciona un objeto de tipo MESH o EMPTY para animar.")
+            self.report({'ERROR'}, "Select a MESH or EMPTY object to animate.")
             return {'CANCELLED'}
 
         try:
@@ -36,11 +36,11 @@ class ORA_OT_AnimateFromCSV(bpy.types.Operator):
             header, data_start = detect_header_and_data_start(lines)
 
             if not header:
-                self.report({'ERROR'}, "No se encontró cabecera en el archivo CSV.")
+                self.report({'ERROR'}, "CSV header was not found.")
                 return {'CANCELLED'}
 
             if data_start is None:
-                self.report({'ERROR'}, "No se encontraron datos en el archivo CSV.")
+                self.report({'ERROR'}, "No data rows were found in the CSV file.")
                 return {'CANCELLED'}
 
             reader = iter_csv_rows(lines, data_start)
@@ -89,13 +89,13 @@ class ORA_OT_AnimateFromCSV(bpy.types.Operator):
                             first_frame_written = True
 
                 except Exception as exc:
-                    print(f"Fila inválida omitida: {exc}")
+                    print(f"Skipped invalid row: {exc}")
                     continue
 
             scene.frame_end = max_frame
-            self.report({'INFO'}, f"Animación generada hasta el frame {max_frame}.")
+            self.report({'INFO'}, f"Animation generated up to frame {max_frame}.")
         except Exception as exc:
-            self.report({'ERROR'}, f"Error leyendo CSV: {exc}")
+            self.report({'ERROR'}, f"Error reading CSV: {exc}")
             return {'CANCELLED'}
 
         return {'FINISHED'}
@@ -103,13 +103,13 @@ class ORA_OT_AnimateFromCSV(bpy.types.Operator):
 
 class ORA_OT_ConvertToLinear(bpy.types.Operator):
     bl_idname = "object.ora_convert_to_linear"
-    bl_label = "Animación Lineal"
-    bl_description = "Convierte todas las curvas de animación del objeto activo a interpolación lineal (sin aceleración/desaceleración)"
+    bl_label = "Linear Animation"
+    bl_description = "Convert all animation curves on the active object to linear interpolation"
 
     def execute(self, context):
         obj = context.view_layer.objects.active
         if not obj:
-            self.report({'WARNING'}, "El objeto no tiene curvas de animación.")
+            self.report({'WARNING'}, "The object has no animation curves.")
             return {'CANCELLED'}
 
         has_curves = False
@@ -119,10 +119,10 @@ class ORA_OT_ConvertToLinear(bpy.types.Operator):
                 keyframe_point.interpolation = 'LINEAR'
 
         if not has_curves:
-            self.report({'WARNING'}, "El objeto no tiene curvas de animación.")
+            self.report({'WARNING'}, "The object has no animation curves.")
             return {'CANCELLED'}
 
-        self.report({'INFO'}, "Curvas de animación convertidas a lineales.")
+        self.report({'INFO'}, "Animation curves converted to linear.")
         return {'FINISHED'}
 
 

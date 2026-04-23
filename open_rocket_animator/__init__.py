@@ -4,7 +4,7 @@ bl_info = {
     "version": (2, 2),
     "blender": (5, 0, 0),
     "location": "3D Viewport > Sidebar > OpenRocket Panel",
-    "description": "Importa un modelo OBJ y anima su movimiento usando datos de simulación de OpenRocket.",
+    "description": "Import an OBJ model and animate its movement using OpenRocket simulation CSV data.",
     "category": "Import-Export",
 }
 
