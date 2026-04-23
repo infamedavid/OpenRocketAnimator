@@ -1,50 +1,56 @@
-import bpy
 from mathutils import Vector
 
+import bpy
 
-def get_rocket_object(rocket_name):
-    if not rocket_name:
-        return None
-    return bpy.data.objects.get(rocket_name)
+MOUNTED_CAMERA_NAME = "Rocket_Top_Camera"
 
 
-def compute_local_bbox_centers(rocket):
-    bbox_corners_local = [Vector(corner) for corner in rocket.bound_box]
-    bbox_max_z_local = max(v.z for v in bbox_corners_local)
-    bbox_min_x_local = min(v.x for v in bbox_corners_local)
-    bbox_max_x_local = max(v.x for v in bbox_corners_local)
-    bbox_center_x_local = (bbox_min_x_local + bbox_max_x_local) / 2
-    bbox_min_y_local = min(v.y for v in bbox_corners_local)
-    bbox_max_y_local = max(v.y for v in bbox_corners_local)
-    bbox_center_y_local = (bbox_min_y_local + bbox_max_y_local) / 2
-    return bbox_center_x_local, bbox_center_y_local, bbox_max_z_local
+def get_rocket_object(props):
+    if getattr(props, "rocket_object", None):
+        return props.rocket_object
+    rocket_name = getattr(props, "rocket_name", "")
+    if rocket_name:
+        return bpy.data.objects.get(rocket_name)
+    return None
 
 
-def apply_top_camera_transform(camera_obj, rocket, props):
-    bbox_center_x_local, bbox_center_y_local, bbox_max_z_local = compute_local_bbox_centers(rocket)
+def compute_local_bbox_mount(rocket):
+    bbox_corners = [Vector(corner) for corner in rocket.bound_box]
+    min_x = min(v.x for v in bbox_corners)
+    max_x = max(v.x for v in bbox_corners)
+    min_y = min(v.y for v in bbox_corners)
+    max_y = max(v.y for v in bbox_corners)
+    max_z = max(v.z for v in bbox_corners)
+    return ((min_x + max_x) * 0.5, (min_y + max_y) * 0.5, max_z)
 
-    camera_obj.location.x = bbox_center_x_local + props.offset_x_camera
-    camera_obj.location.y = bbox_center_y_local
-    camera_obj.location.z = bbox_max_z_local + props.offset_z_camera
 
-    camera_obj.rotation_euler = (0, 0, 0)
+def find_mounted_rocket_camera(scene):
+    cam_obj = scene.objects.get(MOUNTED_CAMERA_NAME)
+    if cam_obj and cam_obj.type == 'CAMERA':
+        return cam_obj
+    obj = bpy.data.objects.get(MOUNTED_CAMERA_NAME)
+    if obj and obj.type == 'CAMERA':
+        return obj
+    return None
+
+
+def apply_live_camera_offsets(camera_obj, props):
+    camera_obj.delta_location.x = props.offset_x_camera
+    camera_obj.delta_location.y = 0.0
+    camera_obj.delta_location.z = props.offset_z_camera
 
     if props.adjust_clip_start:
-        new_clip_start = abs(props.offset_z_camera)
-        if new_clip_start < 0.001:
-            new_clip_start = 0.001
-        camera_obj.data.clip_start = new_clip_start
+        clip_start = max(abs(props.offset_z_camera), 0.001)
+        camera_obj.data.clip_start = clip_start
     else:
         camera_obj.data.clip_start = 0.1
 
 
-def ensure_track_to_constraint(camera_obj, rocket, constraint_name="Track To Rocket"):
-    constraint = camera_obj.constraints.get(constraint_name)
-    if not constraint:
-        constraint = camera_obj.constraints.new(type='TRACK_TO')
-        constraint.name = constraint_name
-
-    constraint.target = rocket
-    constraint.track_axis = 'TRACK_NEGATIVE_Z'
-    constraint.up_axis = 'UP_Y'
-    return constraint
+def rebuild_rocket_camera_mount(camera_obj, rocket, props):
+    base_x, base_y, top_z = compute_local_bbox_mount(rocket)
+    camera_obj.parent = rocket
+    camera_obj.location.x = base_x
+    camera_obj.location.y = base_y
+    camera_obj.location.z = top_z
+    camera_obj.rotation_euler = (0.0, 0.0, 0.0)
+    apply_live_camera_offsets(camera_obj, props)

@@ -1,3 +1,6 @@
+import math
+
+
 def get_anim_data(id_data):
     return getattr(id_data, "animation_data", None)
 
@@ -5,15 +8,12 @@ def get_anim_data(id_data):
 def get_action_and_slot(id_data):
     anim_data = get_anim_data(id_data)
     if not anim_data:
-        return None, None, None
-
+        return None, None
     action = getattr(anim_data, "action", None)
     slot = getattr(anim_data, "action_slot", None)
-
     if not action or not slot:
-        return anim_data, action, None
-
-    return anim_data, action, slot
+        return action, slot
+    return action, slot
 
 
 def _get_channelbag_for_slot(strip, slot):
@@ -26,29 +26,27 @@ def _get_channelbag_for_slot(strip, slot):
             try:
                 return method(slot)
             except Exception:
-                continue
+                pass
 
     channelbags = getattr(strip, "channelbags", None)
     if channelbags is not None:
+        key = getattr(slot, "identifier", None) or getattr(slot, "name", None)
         getter = getattr(channelbags, "get", None)
-        if callable(getter):
-            key = getattr(slot, "identifier", None)
-            if key is None:
-                key = getattr(slot, "name", None)
-            if key is not None:
-                return getter(key)
+        if callable(getter) and key is not None:
+            return getter(key)
 
     return None
 
 
 def iter_slot_fcurves(id_data):
-    _anim_data, action, slot = get_action_and_slot(id_data)
+    action, slot = get_action_and_slot(id_data)
     if not action or not slot:
         return
 
     for layer in getattr(action, "layers", []):
         for strip in getattr(layer, "strips", []):
-            if getattr(strip, "type", None) not in {"KEYFRAME", 'KEYFRAME_STRIP'}:
+            strip_type = getattr(strip, "type", "")
+            if strip_type not in {"KEYFRAME", "KEYFRAME_STRIP"}:
                 continue
             channelbag = _get_channelbag_for_slot(strip, slot)
             if not channelbag:
@@ -57,22 +55,19 @@ def iter_slot_fcurves(id_data):
                 yield fcurve
 
 
-def ensure_fcurve_for_datablock(id_data, data_path, index=0, group_name=""):
-    _anim_data, action, _slot = get_action_and_slot(id_data)
-    if not action:
+def find_or_create_slot_fcurve(id_data, data_path, index):
+    action, slot = get_action_and_slot(id_data)
+    if not action or not slot:
         return None
+
+    for fcurve in iter_slot_fcurves(id_data):
+        if fcurve.data_path == data_path and fcurve.array_index == index:
+            return fcurve
 
     ensure_func = getattr(action, "fcurve_ensure_for_datablock", None)
     if callable(ensure_func):
-        kwargs = {
-            "datablock": id_data,
-            "data_path": data_path,
-            "index": index,
-        }
-        if group_name:
-            kwargs["group"] = group_name
         try:
-            return ensure_func(**kwargs)
+            return ensure_func(datablock=id_data, data_path=data_path, index=index)
         except TypeError:
             try:
                 return ensure_func(id_data, data_path, index)
@@ -80,5 +75,11 @@ def ensure_fcurve_for_datablock(id_data, data_path, index=0, group_name=""):
                 return None
         except Exception:
             return None
-
     return None
+
+
+def compute_attitude_euler(vertical_deg, lateral_deg, roll_rad=0.0):
+    # Conservative mapping for this add-on: zenith -> X tilt, azimuth -> Z heading, roll -> Y axis.
+    vertical_rad = math.radians(vertical_deg)
+    lateral_rad = math.radians(lateral_deg)
+    return (vertical_rad, roll_rad, lateral_rad)
